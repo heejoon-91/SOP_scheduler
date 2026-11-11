@@ -1,0 +1,16 @@
+{
+  "$comment": "SOP 파싱 규칙. 표현이 다른 회사는 코드 수정 없이 이 값을 바꾼다.",
+  "sopCode": "[A-Z]+/[A-Z]+/\\d{3}",
+  "formSuffix": "-\\d+",
+  "sopHeaderLabel": "^SOP\\s*No\\.?$",
+  "titleLabel": "^Title$",
+  "ignoreParas": ["^Standard Operating Procedures$", "^\\(분류코드:.*\\)$"],
+  "levels": [
+    { "level": 1, "pattern": "^(\\d{1,2})\\.(?!\\d)\\s*(.*)$", "label": "{1}." },
+    { "level": 2, "pattern": "^(\\d{1,2})-(\\d{1,2})(?![\\d-])\\.?\\s*(.*)$", "label": "{1}-{2}" },
+    { "level": 3, "pattern": "^\\((\\d{1,2})\\)\\s*(.*)$", "label": "({1})" },
+    { "level": 4, "pattern": "^(\\d{1,2})\\)\\s*(.*)$", "label": "{1})" },
+    { "level": 5, "pattern": "^([가나다라마바사아자차카타파하])\\.\\s*(.*)$", "label": "{1}." },
+    { "level": 6, "pattern": "^([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳])\\s*(.*)$", "label": "{1}" }
+  ]
+}

@@ -1,0 +1,55 @@
+:root {
+  font-family: 'Pretendard', 'Malgun Gothic', system-ui, sans-serif;
+  color: #1f2328;
+  background: #f6f7f9;
+  line-height: 1.5;
+}
+body { margin: 0; }
+main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+h1 { margin: 0; font-size: 1.4rem; }
+h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
+.muted { color: #6b7280; font-size: 0.875rem; }
+.error { color: #b42318; }
+.upload { margin: 1.25rem 0; padding: 1rem; background: #fff; border: 1px dashed #c4c9d0; border-radius: 8px; }
+.upload label { display: flex; gap: 1rem; align-items: center; font-weight: 600; }
+.stats { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.stat { background: #fff; border: 1px solid #e3e6ea; border-radius: 8px; padding: 0.5rem 1rem; min-width: 6rem; }
+.stat .value { font-size: 1.25rem; font-weight: 700; }
+.stat.warn { border-color: #f0b429; background: #fffbea; }
+.warnings { background: #fffbea; border: 1px solid #f0b429; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+.warnings ul { margin: 0; padding-left: 1.25rem; }
+.browser { display: grid; grid-template-columns: 280px 1fr; gap: 1rem; align-items: start; }
+nav { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; }
+nav button { text-align: left; background: none; border: 0; padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font: inherit; font-size: 0.875rem; }
+nav button:hover { background: #eceef1; }
+nav button.active { background: #1f2328; color: #fff; }
+nav .code { font-variant-numeric: tabular-nums; opacity: 0.7; margin-right: 0.25rem; }
+article { background: #fff; border: 1px solid #e3e6ea; border-radius: 8px; padding: 1rem 1.25rem; }
+.clause { padding: 0.15rem 0; font-size: 0.9rem; }
+.clause.top { margin-top: 0.75rem; font-weight: 600; }
+.path { display: inline-block; min-width: 4.5rem; color: #6b7280; font-family: ui-monospace, monospace; font-size: 0.8rem; font-weight: 400; }
+.ref { margin-left: 0.4rem; font-size: 0.75rem; background: #eef2ff; color: #3538cd; border-radius: 4px; padding: 0 0.3rem; font-weight: 400; }
+table { border-collapse: collapse; margin: 0.4rem 0 0.4rem 4.5rem; font-size: 0.8rem; font-weight: 400; }
+td { border: 1px solid #d0d5dd; padding: 0.2rem 0.5rem; vertical-align: top; }
+@media (max-width: 800px) { .browser { grid-template-columns: 1fr; } nav { position: static; max-height: none; } }
+.tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 1px solid #e3e6ea; }
+.tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 0.5rem 1rem; font: inherit; cursor: pointer; color: #6b7280; }
+.tabs button.active { color: #1f2328; border-bottom-color: #1f2328; font-weight: 600; }
+.filters { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; margin: 0.4rem 0; }
+.filters > .muted { min-width: 3rem; }
+.chip { border: 1px solid #d0d5dd; background: #fff; border-radius: 999px; padding: 0.1rem 0.65rem; font: inherit; font-size: 0.8rem; cursor: pointer; }
+.chip.active { background: #1f2328; border-color: #1f2328; color: #fff; }
+.card { border: 1px solid #e3e6ea; border-left-width: 4px; border-radius: 6px; padding: 0.6rem 0.8rem; margin: 0.6rem 0; font-size: 0.9rem; }
+.card-head { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.2rem; }
+.card-text { margin: 0.3rem 0; }
+.card dl { display: grid; grid-template-columns: 5rem 1fr; gap: 0.1rem 0.5rem; margin: 0.3rem 0 0; font-size: 0.82rem; }
+.card dt { color: #6b7280; }
+.card dd { margin: 0; }
+.badge { font-size: 0.75rem; font-weight: 600; border-radius: 4px; padding: 0 0.4rem; color: #fff; }
+.flag { font-size: 0.72rem; background: #fffbea; color: #8a5a00; border: 1px solid #f0d58a; border-radius: 4px; padding: 0 0.3rem; }
+.type-periodic { border-left-color: #2563eb; } .badge.type-periodic { background: #2563eb; }
+.type-stage { border-left-color: #7c3aed; } .badge.type-stage { background: #7c3aed; }
+.type-event { border-left-color: #dc2626; } .badge.type-event { background: #dc2626; }
+.type-expiry { border-left-color: #0d9488; } .badge.type-expiry { background: #0d9488; }
+.type-unknown { border-left-color: #9ca3af; } .badge.type-unknown { background: #9ca3af; }
+.shown-count { margin: 0.75rem 0 0.25rem; padding-top: 0.5rem; border-top: 1px solid #e3e6ea; font-size: 0.875rem; }

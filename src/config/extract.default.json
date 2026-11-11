@@ -1,0 +1,69 @@
+{
+  "$comment": "의무 후보 추출 규칙. 표현이 다른 회사는 코드 수정 없이 이 값을 바꾼다. 패턴은 위에서부터 적용하며, 앞 패턴이 잡은 구간은 뒤 패턴이 다시 잡지 않는다.",
+
+  "excludeSections": ["^목적$", "^적용\\s*범위$", "^용어", "^정의", "^서식$", "^참고\\s*문헌", "^관련\\s*(문서|규정)"],
+  "weakSections": ["^책임", "^업무\\s*분장"],
+  "excludeSentences": ["말한다\\.?$", "의미한다\\.?$", "(을|를|에서|으로|로)\\s*정한다\\.?$", "(에|에는|에도)\\s*적용한다\\.?$", "^※"],
+
+  "obligationVerbs": "(기록|작성|보고|통보|통지|보관|제출|점검|확인|교육|기재|유지|승인을\\s*받|검토|폐기|교정|측정|소독|세척|교환|회수|파쇄|서명|송부|발송|신고|지정|배부|부검|관찰|처리|보유|설명|동의|알리|알린|반환|평가)",
+  "obligationEnding": "다\\.?\\)?$",
+
+  "roles": [
+    "시험실시기관장", "시험책임자", "시험담당자", "관리수의사", "자료관리\\s*책임자", "기록감독자",
+    "신뢰성보증\\s*(책임자|담당자|점검자)?", "SOP\\s*작성\\s*책임자", "작성\\s*책임자", "검토자",
+    "시험의뢰자", "의뢰자", "동물실험윤리위원회", "농림축산검역본부(장)?", "소유자", "보호자",
+    "안전관리\\s*책임자", "시설\\s*(관리\\s*)?책임자", "장비\\s*(관리\\s*)?책임자", "동물관리자", "수행자", "작업자", "방문자", "외부인"
+  ],
+
+  "anchors": [
+    { "pattern": "접수", "anchor": "received_at" },
+    { "pattern": "품목\\s*허가|신고일", "anchor": "study.product_approved_at" },
+    { "pattern": "(결과\\s*)?보고서[^.]{0,10}확정", "anchor": "study.report_finalized_at" },
+    { "pattern": "(결과\\s*)?보고서[^.]{0,10}(송부|통지|제출)", "anchor": "study.report_sent_at" },
+    { "pattern": "(시험|임상시험)[^.]{0,6}(종료|완료)", "anchor": "study.end" },
+    { "pattern": "(시험|임상시험)[^.]{0,6}(개시|시작)", "anchor": "study.start" }
+  ],
+
+  "deadlines": [
+    { "id": "immediate", "pattern": "즉시|지체\\s*없이|지체없이|바로", "kind": "immediate" },
+    { "id": "before-n", "pattern": "(\\d+)\\s*(시간|일|주|개월|년)\\s*전(까지|에|부터)?", "kind": "relative", "valueGroup": 1, "unitGroup": 2, "negative": true },
+    { "id": "gate", "pattern": "((임상)?시험\\s*|동물\\s*|시험물질\\s*|투여\\s*)?(개시|시작|투여|적용|입수|구입|반입|사용|실시|배부|확정|송부|재개)\\s*(전|이전)(에|까지)?(?![가-힣])", "kind": "gate" },
+    { "id": "gate-before-doing", "pattern": "([가-힣]{2,6})하기\\s*(전|이전)(에|까지)?", "kind": "gate" },
+    { "id": "next-business-day", "pattern": "다음\\s*(근무일|영업일|작업일)|익\\s*근무일", "kind": "business_day", "value": 1 },
+    { "id": "n-business-day", "pattern": "(\\d+)\\s*(근무일|영업일|작업일)\\s*(이내|안에|내)", "kind": "business_day", "valueGroup": 1 },
+    { "id": "retention", "pattern": "(\\d+)\\s*(년|개월)\\s*(간|동안|이상)?\\s*(보관|보존)", "kind": "expiry", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "retention-from", "pattern": "부터\\s*(\\d+)\\s*(년|개월)\\s*(간|동안)", "kind": "expiry", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "retention-period", "pattern": "보[관존]\\s*기간[^.]{0,40}?(\\d+)\\s*(년|개월)", "kind": "expiry", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "within-n", "pattern": "(\\d+)\\s*(시간|일|주|개월)\\s*(이내|안에|내에|내|까지)", "kind": "relative", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "within-n-h", "pattern": "(\\d+)\\s*h(?![a-z])", "kind": "relative", "valueGroup": 1, "unit": "hour" },
+    { "id": "plus-n-retention", "pattern": "\\+\\s*(\\d+)\\s*(년|개월)(?=[^.]{0,20}(보관|만료))", "kind": "expiry", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "plus-n", "pattern": "\\+\\s*(\\d+)\\s*(시간|일|주|개월|년)", "kind": "relative", "valueGroup": 1, "unitGroup": 2 },
+    { "id": "not-exceed", "pattern": "(\\d+)\\s*(시간|일|주|개월)\\s*을?를?\\s*넘지", "kind": "relative", "valueGroup": 1, "unitGroup": 2 },
+
+    { "id": "n-years-once", "pattern": "([2-9])\\s*년\\s*(에\\s*)?1\\s*회|([2-9])\\s*년마다", "kind": "recurring", "rrule": "FREQ=YEARLY;INTERVAL={1|3}" },
+    { "id": "n-months-once", "pattern": "([2-9]|1[0-2])\\s*개월\\s*(에\\s*)?1\\s*회|([2-9]|1[0-2])\\s*개월마다", "kind": "recurring", "rrule": "FREQ=MONTHLY;INTERVAL={1|3}" },
+    { "id": "delegated-period", "pattern": "(정한|정해진|지정한|정하는)\\s*(점검\\s*|교정\\s*)?주기", "kind": "vague" },
+    { "id": "start-of-year", "pattern": "매년\\s*초|연초|연말|매년\\s*말", "kind": "vague" },
+    { "id": "periodic", "pattern": "정기적으로|주기적으로|정기\\s*점검", "kind": "vague" },
+    { "id": "monthly-range", "pattern": "매월\\s*(\\d{1,2})\\s*일?\\s*[~∼\\-]\\s*(\\d{1,2}|말)\\s*일", "kind": "recurring", "rrule": "FREQ=MONTHLY;BYMONTHDAY={1}" },
+    { "id": "monthly-days", "pattern": "매월\\s*([\\d·,\\s]+)\\s*일", "kind": "recurring", "rrule": "FREQ=MONTHLY;BYMONTHDAY={list1}" },
+    { "id": "workday", "pattern": "작업일마다|근무일마다|매\\s*작업일|매\\s*근무일", "kind": "recurring", "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR" },
+    { "id": "daily", "pattern": "매일|일일|1일\\s*1회|하루\\s*1회", "kind": "recurring", "rrule": "FREQ=DAILY" },
+    { "id": "n-weeks", "pattern": "(\\d+)\\s*주\\s*(에\\s*)?1\\s*회|(\\d+)\\s*주마다", "kind": "recurring", "rrule": "FREQ=WEEKLY;INTERVAL={1|3}" },
+    { "id": "weekly", "pattern": "매주|주\\s*1\\s*회|1주마다", "kind": "recurring", "rrule": "FREQ=WEEKLY" },
+    { "id": "weekly-n", "pattern": "주\\s*([2-9])\\s*회", "kind": "vague" },
+    { "id": "quarterly", "pattern": "분기\\s*(별|마다)?\\s*(1\\s*회)?|3\\s*개월마다", "kind": "recurring", "rrule": "FREQ=MONTHLY;INTERVAL=3" },
+    { "id": "half-year", "pattern": "반기\\s*(별|마다)?\\s*(1\\s*회)?|6\\s*개월마다|연\\s*2\\s*회|년\\s*2\\s*회", "kind": "recurring", "rrule": "FREQ=MONTHLY;INTERVAL=6" },
+    { "id": "monthly", "pattern": "매월|월\\s*1\\s*회|1\\s*개월마다|매달", "kind": "recurring", "rrule": "FREQ=MONTHLY" },
+    { "id": "yearly", "pattern": "매년|연\\s*1\\s*회|년\\s*1\\s*회|1\\s*년마다|연간", "kind": "recurring", "rrule": "FREQ=YEARLY" },
+    { "id": "n-per-year", "pattern": "연\\s*([3-9])\\s*회|년\\s*([3-9])\\s*회", "kind": "vague" }
+  ],
+
+  "stageKeywords": "시험\\s*(의뢰|접수|계약|개시|시작|종료|완료)|계약|계획서|결과보고서|완료\\s*보고|입수|검역|순화|투여\\s*(개시|전)|시험\\s*단계|수탁|동의\\s*(취득|서)|시험별|스크리닝|개시\\s*점검|사전에",
+  "stageAnchors": ["received_at", "study.start", "study.end", "study.report_sent_at", "study.report_finalized_at"],
+  "periodicVagueIds": ["periodic", "start-of-year", "weekly-n", "n-per-year", "delegated-period"],
+  "eventKeywords": "경우|발생|이상반응|사고|응급|일탈|폐사|사망|고장|오작동|누출|분실|위반|변경|중단|불합격|부적합|민원|도난|화재|감염|탈출|이탈",
+  "conditionPattern": "([^,.]{2,40}?(경우|때|시))(에는|에|에도|,)",
+
+  "periodHeaders": "(주기|빈도|시기|기한|횟수)$"
+}

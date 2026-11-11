@@ -1,0 +1,12 @@
+node_modules/
+dist/
+out/
+.omc/
+
+# 회사 SOP 원본·원문을 담은 파일 (공개 저장소에 올리지 않음)
+reference_SOP/
+src/templates/kulf-com.template.json
+data/
+
+# 개인 스크린샷
+image.png
